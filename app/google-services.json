@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "92642372609",
+    "firebase_url": "https://bookreview-256117.firebaseio.com",
+    "project_id": "bookreview-256117",
+    "storage_bucket": "bookreview-256117.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:92642372609:android:aad8dcad67ba068cad6400",
+        "android_client_info": {
+          "package_name": "com.msa.bookreview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "92642372609-gn3lah657vh142gdsceftdtg09tiuou4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.msa.bookreview",
+            "certificate_hash": "65e5878be2c9410c5fec6716b345f7353f622852"
+          }
+        },
+        {
+          "client_id": "92642372609-nforas12g8p6v4vcegb8gejsupuh7sp1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-MajyE5elwkAv6aMCrNmKL6kdRY2RGug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "92642372609-nforas12g8p6v4vcegb8gejsupuh7sp1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
