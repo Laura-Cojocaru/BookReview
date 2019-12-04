@@ -14,4 +14,5 @@
     <string name="button">Button</string>
     <string name="sign_out">SIGN OUT</string>
     <string name="scan">SCAN</string>
+    <string name="take_picture">take_picture</string>
 </resources>

@@ -1,58 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     tools:context=".MainActivity">
 
-    <SurfaceView
-        android:id="@+id/sv_scanner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <TextView
-        android:id="@+id/tv_text"
-        android:layout_width="match_parent"
-        android:layout_height="117dp"
-        android:layout_gravity="bottom"
-        android:background="@color/colorAccent"
-        android:padding="8dp" />
-
 <!--    <Button-->
-<!--        android:id="@+id/btn_sign_out"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentStart="true"-->
-<!--        android:layout_alignParentLeft="true"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_marginStart="34dp"-->
-<!--        android:layout_marginLeft="34dp"-->
-<!--        android:layout_marginTop="48dp"-->
-<!--        android:layout_marginEnd="289dp"-->
-<!--        android:layout_marginRight="289dp"-->
-<!--        android:layout_marginBottom="635dp"-->
-<!--        android:enabled="false"-->
-<!--        android:text="@string/sign_out" />-->
+<!--            android:id="@+id/btn_sign_out"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="34dp"-->
+<!--            android:layout_marginLeft="34dp"-->
+<!--            android:layout_marginTop="48dp"-->
+<!--            android:layout_marginEnd="289dp"-->
+<!--            android:layout_marginRight="289dp"-->
+<!--            android:layout_marginBottom="635dp"-->
+<!--            android:enabled="false"-->
+<!--            android:text="@string/sign_out" />-->
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:theme="@style/AppTheme.AppBarOverlay">-->
+    <!--ImageView in which image will be set-->
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            android:background="?attr/colorPrimary"-->
-<!--            app:popupTheme="@style/AppTheme.PopupOverlay" />-->
 
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
+    <ImageView
+        android:id="@+id/image_view"
+        android:src="@drawable/ic_image_black_24dp"
+        android:scaleType="centerCrop"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:contentDescription="@string/todo" />
 
-<!--    <include layout="@layout/content_main" />-->
+    <!--Button to open camera-->
+    <Button
+        android:id="@+id/capture_btn"
+        android:layout_width="209dp"
+        android:layout_height="wrap_content"
+        android:text="@string/take_picture" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <Button
+        android:id="@+id/btn_sign_out"
+        android:text="@string/sign_out"
+        android:enabled="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
