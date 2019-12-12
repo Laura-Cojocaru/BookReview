@@ -4,61 +4,71 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-//import android.support.v7.app.AppCompatActivity
 import android.provider.MediaStore
-import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import android.graphics.drawable.BitmapDrawable
+import android.view.View
+import android.widget.*
+import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.firebase.ml.vision.text.FirebaseVisionText
 
 
+@Suppress("UNUSED_PARAMETER")
 class MainActivity : AppCompatActivity() {
 
-    private val PERMISSION_CODE = 1000;
+    private val PERMISSION_CODE = 1000
     private val IMAGE_CAPTURE_CODE = 1001
-    var image_uri: Uri? = null
+    private var imageUri: Uri? = null
 
-    lateinit var providers : List<AuthUI.IdpConfig>
-    val MY_REQUEST_CODE: Int = 7117
+    private lateinit var providers : List<AuthUI.IdpConfig>
+    private val MY_REQUEST_CODE: Int = 7117
+
+    lateinit var imageView: ImageView
+    lateinit var editText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //button click
+        imageView = findViewById(R.id.imageView)
+        editText = findViewById(R.id.editText)
+
         capture_btn.setOnClickListener {
-            //if system os is Marshmallow or Above, we need to request runtime permission
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.CAMERA)
                     == PackageManager.PERMISSION_DENIED ||
                     checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_DENIED){
+                    == PackageManager.PERMISSION_DENIED
+                ) {
                     //permission was not enabled
-                    val permission = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    val permission = arrayOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
                     //show popup to request permission
                     requestPermissions(permission, PERMISSION_CODE)
-                }
-                else{
+                } else {
                     //permission already granted
                     openCamera()
                 }
-            }
-            else{
+            } else {
                 //system os is < marshmallow
                 openCamera()
             }
         }
 
-        providers = Arrays.asList<AuthUI.IdpConfig>(
+        providers = listOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build(),
             AuthUI.IdpConfig.PhoneBuilder().build()
@@ -69,13 +79,22 @@ class MainActivity : AppCompatActivity() {
         btn_sign_out.setOnClickListener {
             //sign out
             AuthUI.getInstance().signOut(this@MainActivity)
-                .addOnCompleteListener{
+                .addOnCompleteListener {
                     btn_sign_out.isEnabled = false
                     showSignInOptions()
                 }
-                .addOnFailureListener{
-                        e-> Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
-                }        }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+        }
+
+    }
+
+    fun selectImage(view: View) {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
     }
 
     private fun showSignInOptions() {
@@ -90,10 +109,10 @@ class MainActivity : AppCompatActivity() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "New Picture")
         values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
-        image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         //camera intent
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
 
@@ -102,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         //called when user presses ALLOW or DENY from Permission Request Popup
         when(requestCode){
             PERMISSION_CODE -> {
-                if (grantResults.size > 0 && grantResults[0] ==
+                if (grantResults.isNotEmpty() && grantResults[0] ==
                     PackageManager.PERMISSION_GRANTED){
                     //permission from popup was granted
                     openCamera()
@@ -131,8 +150,46 @@ class MainActivity : AppCompatActivity() {
         }
         if (resultCode == Activity.RESULT_OK){
             //set image captured to image view
-            image_view.setImageURI(image_uri)
+            imageView.setImageURI(imageUri)
+        }
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            imageView.setImageURI(data!!.data)
+
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    fun startRecognizing(v: View) {
+        if (imageView.drawable != null) {
+            editText.setText("")
+            v.isEnabled = false
+            val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+            val image = FirebaseVisionImage.fromBitmap(bitmap)
+            val detector = FirebaseVision.getInstance().onDeviceTextRecognizer
+
+            detector.processImage(image)
+                .addOnSuccessListener { firebaseVisionText ->
+                    v.isEnabled = true
+                    processResultText(firebaseVisionText)
+                }
+                .addOnFailureListener {
+                    v.isEnabled = true
+                    editText.setText("Failed")
+                }
+        } else {
+            Toast.makeText(this, "Select an Image First", Toast.LENGTH_LONG).show()
+        }
+
+    }
+    @SuppressLint("SetTextI18n")
+    private fun processResultText(resultText: FirebaseVisionText) {
+        if (resultText.textBlocks.size == 0) {
+            editText.setText("No Text Found")
+            return
+        }
+        for (block in resultText.textBlocks) {
+            val blockText = block.text
+            editText.append(blockText + "\n")
+        }
+    }
 }

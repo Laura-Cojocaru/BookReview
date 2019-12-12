@@ -1,49 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context=".MainActivity">
-
-<!--    <Button-->
-<!--            android:id="@+id/btn_sign_out"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="34dp"-->
-<!--            android:layout_marginLeft="34dp"-->
-<!--            android:layout_marginTop="48dp"-->
-<!--            android:layout_marginEnd="289dp"-->
-<!--            android:layout_marginRight="289dp"-->
-<!--            android:layout_marginBottom="635dp"-->
-<!--            android:enabled="false"-->
-<!--            android:text="@string/sign_out" />-->
-
-    <!--ImageView in which image will be set-->
-
-
-    <ImageView
-        android:id="@+id/image_view"
-        android:src="@drawable/ic_image_black_24dp"
-        android:scaleType="centerCrop"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:contentDescription="@string/todo" />
-
-    <!--Button to open camera-->
-    <Button
-        android:id="@+id/capture_btn"
-        android:layout_width="209dp"
-        android:layout_height="wrap_content"
-        android:text="@string/take_picture" />
+    android:padding="15dp">
 
     <Button
         android:id="@+id/btn_sign_out"
-        android:text="@string/sign_out"
+        android:layout_width="156dp"
+        android:layout_height="85dp"
+        android:layout_above="@+id/imageView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="225dp"
+        android:layout_marginRight="225dp"
+        android:layout_marginBottom="-70dp"
         android:enabled="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:text="@string/sign_out" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="89dp"
+        android:src="@drawable/ic_image_black_24dp" />
+
+    <LinearLayout
+        android:id="@+id/actionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/select_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="selectImage"
+            android:text="@string/select_image" />
+        <Button
+            android:id="@+id/capture_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/take_picture" />
+
+        <Button
+            android:id="@+id/recognize_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startRecognizing"
+            android:text="@string/scan" />
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionContainer"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:padding="10dp"/>
+
+</RelativeLayout>
+

@@ -14,5 +14,9 @@
     <string name="button">Button</string>
     <string name="sign_out">SIGN OUT</string>
     <string name="scan">SCAN</string>
-    <string name="take_picture">take_picture</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="scan_text">Scan Text</string>
+    <string name="scan_results">Scan Results:</string>
+    <string name="recognize_text">Recognize Text</string>
+    <string name="select_image">Select Image</string>
 </resources>
